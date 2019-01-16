@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  ### MySQL ################################################
+  mysql:
+    build:
+      context: ./mysql
+      args:
+        - MYSQL_VERSION=latest
+    environment:
+      - MYSQL_DATABASE=book
+      - MYSQL_USER=xiao
+      - MYSQL_PASSWORD=xiaoP@55w0rd
+      - MYSQL_ROOT_PASSWORD=akgjpoinvee
+      - TZ=Asia/Taipei
+    volumes:
+      - ./.db/data/mysql:/var/lib/mysql
+      - ./mysql/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+      
+  ### phpMyAdmin ###########################################
+  phpmyadmin:
+    build: ./phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - EXTERNAL_IP=0.0.0.0 # not verify
+    ports:
+      - "8080:80"
+    depends_on:
+      - "mysql"
