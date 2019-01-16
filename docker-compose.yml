@@ -8,10 +8,10 @@ services:
       args:
         - MYSQL_VERSION=latest
     environment:
-      - MYSQL_DATABASE=book
-      - MYSQL_USER=xiao
-      - MYSQL_PASSWORD=xiaoP@55w0rd
-      - MYSQL_ROOT_PASSWORD=akgjpoinvee
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - TZ=Asia/Taipei
     volumes:
       - ./.db/data/mysql:/var/lib/mysql
@@ -24,8 +24,11 @@ services:
     build: ./phpmyadmin
     environment:
       - PMA_ARBITRARY=1
-      - EXTERNAL_IP=0.0.0.0 # not verify
+      - EXTERNAL_IP=0.0.0.0
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     ports:
-      - "8080:80"
+      - "${PMA_PORT}:80"
     depends_on:
       - "mysql"
